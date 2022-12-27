@@ -1,13 +1,14 @@
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
-import { StudentController } from "./modules/student/student.controller";
-import { StudentModule } from "./modules/student/student.module";
-import { LoggerMiddleware } from "./middleware/LoggerMiddleware";
-import { ThrottlerModule } from "@nestjs/throttler";
-import { PrismaModule } from "./modules/prisma/prisma.module";
+import { PrismaModule } from "./common/prisma/prisma.module";
 import { ConfigModule } from "@nestjs/config";
-import { UserModule } from "./modules/user/user.module";
-import { AuthModule } from "./modules/auth/auth.module";
-import { UserController } from "./modules/user/user.controller";
+import { StudentModule } from "./student/student.module";
+import { UserModule } from "./user/user.module";
+import { AuthModule } from "./auth/auth.module";
+import { HelperModule } from "./common/helper/helper.module";
+import { DataTransformModule } from "./common/data-transform/data-transform.module";
+import { ThrottlerModule } from "@nestjs/throttler";
+import { AuthController } from "./auth/auth.controller";
+import { LogRequest } from "./common/middleware/log-auth-request";
 
 @Module({
   imports: [
@@ -19,6 +20,8 @@ import { UserController } from "./modules/user/user.controller";
     StudentModule,
     UserModule,
     AuthModule,
+    HelperModule,
+    DataTransformModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -28,8 +31,6 @@ import { UserController } from "./modules/user/user.controller";
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes(StudentController, UserController);
+    consumer.apply(LogRequest).forRoutes(AuthController);
   }
 }

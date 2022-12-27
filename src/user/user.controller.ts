@@ -19,7 +19,7 @@ export class UserController {
   }
 
   @Get(":id")
-  getById(@Param("id", new ParseIntPipe()) id) {
+  getById(@Param("id", ParseIntPipe) id: number) {
     return this.userService.getById(id);
   }
 }

@@ -1,15 +1,15 @@
 import { Injectable } from "@nestjs/common";
-import { StudentDto } from "../../types";
-import { PrismaService } from "../prisma/prisma.service";
+import { StudentDto } from "../types";
+import { PrismaService } from "../common/prisma/prisma.service";
 import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class StudentService {
   constructor(private prisma: PrismaService) {}
 
-  async create(student: StudentDto) {
+  async create(student: StudentDto): Promise<StudentDto> {
     try {
-      const response = await this.prisma.student.create({
+      return await this.prisma.student.create({
         data: {
           uuid: uuidv4(),
           name: student.name,
@@ -19,7 +19,6 @@ export class StudentService {
           createdBy: student.createdBy,
         },
       });
-      return response;
     } catch (e) {
       throw new Error(e);
     }
@@ -32,7 +31,7 @@ export class StudentService {
           id: id,
         },
       });
-      return student;
+      return student ? student : "nothing found";
     } catch (e) {
       throw new Error(e);
     }
@@ -40,7 +39,7 @@ export class StudentService {
 
   async getAllStudentsByUser() {
     try {
-      const student = await this.prisma.student.findMany({
+      return await this.prisma.student.findMany({
         select: {
           name: true,
           studentId: true,
@@ -58,7 +57,6 @@ export class StudentService {
           studentId: "asc",
         },
       });
-      return student;
     } catch (e) {
       throw new Error(e);
     }

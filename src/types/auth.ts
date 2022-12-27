@@ -9,8 +9,3 @@ export class AuthDto {
   @IsString()
   password: string;
 }
-
-export interface Auth {
-  email?: string;
-  password?: string;
-}

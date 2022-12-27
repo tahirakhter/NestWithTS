@@ -1,6 +1,5 @@
 import { Controller, Post, Body, ValidationPipe } from "@nestjs/common";
-import { AuthDto } from "../../types";
-import { UserDto } from "../../types";
+import { AuthDto, UserDto } from "../types";
 import { UserService } from "../user/user.service";
 import { AuthService } from "./auth.service";
 
@@ -13,11 +12,11 @@ export class AuthController {
 
   @Post("login")
   async login(@Body() authDto: AuthDto) {
-    return this.authService.login(authDto);
+    return await this.authService.login(authDto);
   }
 
   @Post("create")
   async create(@Body(new ValidationPipe()) userDto: UserDto) {
-    return this.authService.create(userDto);
+    return await this.authService.create(userDto);
   }
 }

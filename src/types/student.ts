@@ -1,10 +1,10 @@
 import { Transform } from "class-transformer";
-import { IsNotEmpty, IsString } from "class-validator";
-import { transformPhone } from "../helper";
+import { IsNotEmpty, IsString, MaxLength } from "class-validator";
 
 export class StudentDto {
   @IsNotEmpty()
   @IsString()
+  @MaxLength(300)
   name: string;
 
   @IsNotEmpty()
@@ -16,16 +16,9 @@ export class StudentDto {
   program: string;
 
   @IsString()
-  @Transform(transformPhone)
+  //@Transform(({ value }) => new Prisma.Decimal(value))
+  //@Transform(transformPhone)
   phone: string;
 
-  createdBy?: number;
-}
-
-export interface Student {
-  name: string;
-  studentId: string;
-  program: string;
-  phone?: string;
   createdBy?: number;
 }
