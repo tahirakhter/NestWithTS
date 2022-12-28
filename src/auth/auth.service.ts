@@ -29,6 +29,7 @@ export class AuthService {
       return {
         access_token: this.jwtService.sign({
           email: user.email,
+          role: user.role,
           sub: user.id,
         }),
       };
@@ -45,7 +46,7 @@ export class AuthService {
           name: user.name,
           email: user.email,
           password: await this.helperService.generateHash(user.password),
-          role: "admin",
+          role: user.role,
         },
       });
     } catch (e) {

@@ -9,10 +9,12 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { StudentDto } from "../types";
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { StudentService } from "./student.service";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "../auth/roles.guard";
+import { RoleType } from "../common/enum/role-type.enum";
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AuthGuard("jwt"))
 @Controller("student")
 export class StudentController {
   constructor(private studentService: StudentService) {}
@@ -27,6 +29,7 @@ export class StudentController {
     return await this.studentService.getById(id);
   }
 
+  @UseGuards(new RolesGuard(RoleType.ADMIN))
   @Post("create")
   async create(
     @Body() studentDto: StudentDto,

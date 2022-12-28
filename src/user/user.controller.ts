@@ -5,10 +5,10 @@ import {
   ParseIntPipe,
   UseGuards,
 } from "@nestjs/common";
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { AuthGuard } from "@nestjs/passport";
 import { UserService } from "./user.service";
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AuthGuard("jwt"))
 @Controller("user")
 export class UserController {
   constructor(private userService: UserService) {}
