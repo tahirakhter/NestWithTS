@@ -15,7 +15,7 @@ export class UserService {
       });
       return response;
     } catch (e) {
-      throw new Error(e);
+      throw new Error(e.message);
     }
   }
 
@@ -28,7 +28,7 @@ export class UserService {
       });
       return response;
     } catch (e) {
-      throw new Error(e);
+      throw new Error(e.message);
     }
   }
 
@@ -53,7 +53,7 @@ export class UserService {
       });
       return student;
     } catch (e) {
-      throw new Error(e);
+      throw new Error(e.message);
     }
   }
 }
